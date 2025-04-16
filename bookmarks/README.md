@@ -15,9 +15,10 @@
 - [Miscellaneous Examples | JSON Schema](https://json-schema.org/learn/miscellaneous-examples.html)
 - [Flowcharts Syntax | Mermaid](https://mermaid.js.org/syntax/flowchart.html)
 - [JSON to Pydantic](https://jsontopydantic.com/)
-- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) Commit message template
 - [Web Check](https://web-check.xyz/)
 - [ChartDB - sennix-db Diagram | Visualize Database Schemas](https://app.chartdb.io/diagrams/g6zyyeq9cvcw)
+- [Linux Command Library](https://linuxcommandlibrary.com/basic/oneliners) Useful one-liner Linux commands
 
 ### AI-Math
 
