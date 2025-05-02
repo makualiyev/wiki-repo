@@ -5,6 +5,7 @@ This repo is kind of a knowledge base.
 ---
 
 * Guides
+  * [Development&Tooling](./guides/dev-tooling.md)
   * [Web Scraping intro](./guides/web-scraping-intro.md)
 * Bookmarks
   * [Tools](./bookmarks/README.md#tools)
