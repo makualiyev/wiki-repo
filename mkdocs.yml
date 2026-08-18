@@ -1,0 +1,94 @@
+site_name: Wiki
+site_description: A personal knowledge base — guides, cheatsheets, TILs and bookmarks.
+site_author: makualiyev
+# When you enable GitHub Pages, set this to the published URL, e.g.
+# site_url: https://makualiyev.github.io/wiki-repo/
+
+repo_url: https://github.com/makualiyev/wiki-repo
+repo_name: makualiyev/wiki-repo
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.indexes
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - toc.follow
+
+nav:
+  - Home: index.md
+  - Guides:
+      - Development & Tooling: guides/dev-tooling.md
+      - Web Scraping intro: guides/web-scraping-intro.md
+  - Cheatsheets:
+      - Overview: cheatsheets/index.md
+      - git — everyday recipes: cheatsheets/git.md
+  - TILs:
+      - Overview: til/index.md
+      - 2026-08-18 — psql \watch: til/2026-08-18-psql-watch.md
+  - Bookmarks: bookmarks/index.md
+
+markdown_extensions:
+  # Callouts / admonitions
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  # Code blocks, tabs, task lists, emoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/makualiyev

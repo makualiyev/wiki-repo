@@ -45,4 +45,4 @@ sudo apt -y install postgresql
 - Adding a reader user is the same thing as adding a user in Linux other than `root`, as it is out of best practices domain to use `root` on everyday basis.
 
 ------------------------------------------------
-[<- Table of Contents](../README.md)
+[<- Table of Contents](../index.md)
