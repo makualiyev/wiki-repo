@@ -5,7 +5,7 @@
 ### Tools
 
 - [explainshell.com - about](https://explainshell.com/about)
-- [RegExr: Learn, Build, &amp; Test RegEx](https://regexr.com/)
+- [RegExr: Learn, Build, & Test RegEx](https://regexr.com/)
 - [Learn Shell - Free Interactive Shell Tutorial](https://www.learnshell.org/)
 - [Pandas Tutor - visualize Python pandas code](https://pandastutor.com/index.html)
 - [Animate SQL](https://animatesql.com/)
@@ -20,19 +20,19 @@
 - [ChartDB - sennix-db Diagram | Visualize Database Schemas](https://app.chartdb.io/diagrams/g6zyyeq9cvcw)
 - [Linux Command Library](https://linuxcommandlibrary.com/basic/oneliners) Useful one-liner Linux commands
 
-### AI-Math
+### AI & Math
 
 - [Logistic Regression - The Algorithms](https://the-algorithms.com/algorithm/logistic-regression)
 - [Neural Networks](https://mlu-explain.github.io/neural-networks/)
 
 ### Data Structures & Algorithms
 
-- [Основы алгоритмов](https://academy.yandex.ru/handbook/algorithms?utm_source=telegram&amp;utm_medium=internal&amp;utm_campaign=handbook&amp;utm_content=9.11)
+- [Основы алгоритмов](https://academy.yandex.ru/handbook/algorithms?utm_source=telegram&utm_medium=internal&utm_campaign=handbook&utm_content=9.11)
 - [Algorithms by Jeff Erickson](https://jeffe.cs.illinois.edu/teaching/algorithms/)
 
-### Network&amp;goodreads
+### Network & goodreads
 
-- [Полное понимание асинхронности в&nbsp;браузере / Хабр](https://habr.com/ru/companies/yandex/articles/718084/)
+- [Полное понимание асинхронности в браузере / Хабр](https://habr.com/ru/companies/yandex/articles/718084/)
 - [Beej's Guide to Network Concepts](https://beej.us/guide/bgnet0/html/split/)
 - [Sir Markdown. Лекция Яндекса / Хабр](https://habr.com/ru/company/yandex/blog/342192/)
 - [Безопасный HTTPS-прокси менее чем за 10 минут / Хабр](https://habr.com/ru/articles/687512/)
@@ -59,7 +59,7 @@
 
 - [Python behind the scenes #12: how async/await works in Python](https://tenthousandmeters.com/blog/python-behind-the-scenes-12-how-asyncawait-works-in-python/)
 - [Python Guidelines: API Design | Azure SDKs](https://azure.github.io/azure-sdk/python_design.html#async-support)
-- [Практическое руководство по&nbsp;разработке бэкенд-сервиса на Python / Хабр](https://habr.com/ru/companies/yandex/articles/499534/)
+- [Практическое руководство по разработке бэкенд-сервиса на Python / Хабр](https://habr.com/ru/companies/yandex/articles/499534/)
 - [grundic/awesome-python-models: A curated list of awesome Python libraries, which implement models, schemas, serializers/deserializers, ODM's/ORM's, Active Records or similar patterns.](https://github.com/grundic/awesome-python-models#:~:text=schema%20%2D%20schema%20is%20a%20library,)%20to%20Python%20data%2Dtypes.)
 - [Python Application Layouts: A Reference – Real Python](https://realpython.com/python-application-layouts/)
 - [dabeaz-course/practical-python: Practical Python Programming (course by @dabeaz)](https://github.com/dabeaz-course/practical-python)
@@ -70,7 +70,7 @@
 ### Data Platform
 
 - [Data Team Platform | GitLab](https://about.gitlab.com/handbook/business-technology/data-team/platform/)
-- [Commits · apache/airflow](https://github.com/apache/airflow/commits/main/?since=2014-10-01&amp;until=2014-10-31&amp;after=4006769579b768744af18edfb0c8e1d25ddad95d+34)
+- [Commits · apache/airflow](https://github.com/apache/airflow/commits/main/?since=2014-10-01&until=2014-10-31&after=4006769579b768744af18edfb0c8e1d25ddad95d+34)
 - [deeplearning-prompt-short/l4-summarizing.ipynb at main · tol/deeplearning-prompt-short · GitHub](https://github.com/tol/deeplearning-prompt-short/blob/main/l4-summarizing.ipynb)
 - [datastacktv/data-engineer-roadmap: Roadmap to becoming a data engineer in 2021](https://github.com/datastacktv/data-engineer-roadmap)
 - [Дизайн таблиц для чайников / Хабр](https://habr.com/ru/company/agima/blog/692032/)
@@ -79,7 +79,7 @@
 - [Anton Zhiyanov](https://antonz.org/)
 - [Data Engineering Vault: A Second Brain Knowledge Network](https://www.ssp.sh/brain/data-engineering/)
 - [About chDB](https://doc.chdb.io/#/)
-- [The Document Concept | SAP Help Portal](https://help.sap.com/docs/SAP_ERP/6fda92e10ab142c7ba3fd72c7e73d505/1363bd534f22b44ce10000000a174cb4.html?locale=en-US&amp;version=6.05.latest)
+- [The Document Concept | SAP Help Portal](https://help.sap.com/docs/SAP_ERP/6fda92e10ab142c7ba3fd72c7e73d505/1363bd534f22b44ce10000000a174cb4.html?locale=en-US&version=6.05.latest)
 
 ### SQL
 
