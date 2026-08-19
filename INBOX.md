@@ -16,4 +16,9 @@ the line from here.
 
 ## Bookmarks to file
 
-- [ ] 
+<!-- Imported from spreadsheet 'Sheet6' — bare URLs with no topic/description yet. -->
+- [ ] https://github.com/crystaldba/postgres-mcp
+- [ ] https://github.com/rohitg00/ai-engineering-from-scratch (already filed under AI in Learning Resources — dedupe)
+- [ ] https://github.com/justxor/Claudecourse
+- [ ] https://github.com/andrewyng/openworker
+- [ ] https://github.com/microsoft/flint-chart
