@@ -1,10 +1,15 @@
 # Bookmarks
 
+!!! info "See also"
+    Longer, annotated reference material lives on the [Learning Resources](resources.md)
+    page, and things queued to read are on the [Reading List](../reading-list.md).
+
 ## Development
 
 ### Tools
 
 - [explainshell.com - about](https://explainshell.com/about)
+- [Grep by Vercel - code search across a million GitHub repos](https://grep.app/)
 - [RegExr: Learn, Build, & Test RegEx](https://regexr.com/)
 - [Learn Shell - Free Interactive Shell Tutorial](https://www.learnshell.org/)
 - [Pandas Tutor - visualize Python pandas code](https://pandastutor.com/index.html)

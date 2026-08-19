@@ -55,7 +55,10 @@ nav:
   - TILs:
       - Overview: til/index.md
       - 2026-08-18 — psql \watch: til/2026-08-18-psql-watch.md
-  - Bookmarks: bookmarks/index.md
+  - Bookmarks:
+      - Links by topic: bookmarks/index.md
+      - Learning Resources: bookmarks/resources.md
+  - Reading List: reading-list.md
 
 markdown_extensions:
   # Callouts / admonitions
