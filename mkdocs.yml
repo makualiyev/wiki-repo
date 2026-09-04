@@ -49,6 +49,7 @@ nav:
   - Guides:
       - Development & Tooling: guides/dev-tooling.md
       - Web Scraping intro: guides/web-scraping-intro.md
+      - Telegram → INBOX bot: guides/telegram-inbox-bot.md
   - Cheatsheets:
       - Overview: cheatsheets/index.md
       - git — everyday recipes: cheatsheets/git.md
