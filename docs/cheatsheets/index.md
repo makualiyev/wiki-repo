@@ -8,6 +8,8 @@ and add it to the list below (and to `nav:` in `mkdocs.yml`).
 
 ## Sheets
 
+- [CS:APP ch. 3 — x86-64 assembly](csapp-ch3-x86-64.md) — reading disassembly:
+  registers, operands, control flow, stack frames, data layout
 - [git — everyday recipes](git.md)
 
 <!-- Candidates worth writing: curl flags, psql meta-commands, docker, ssh, jq. -->
