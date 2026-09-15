@@ -13,6 +13,19 @@ Linux — so operands read `OP src, dst` and the destination is on the right.
     flow, procedures, data layout, buffer overflow. It's not a substitute for
     the text.
 
+    Companions: the [C-to-assembly walkthrough](../guides/csapp-ch3-c-to-asm.md)
+    compiles every pattern here on a real machine, the
+    [gdb & objdump sheet](gdb-objdump.md) covers the tools, and
+    [ch. 3 resources](../bookmarks/csapp-ch3.md) collects the course material.
+
+!!! warning "AT&T vs Intel syntax"
+    The book, `gcc -S` and `objdump -d` use **AT&T** syntax: `OP src, dst`,
+    registers prefixed `%`, constants prefixed `$`. Intel manuals, `objdump
+    -M intel`, most Windows tooling and most disassemblers use **Intel**
+    syntax, where the operands are the other way round and there are no
+    sigils — `mov rax, 5` means `movq $5, %rax`. Check which one you're
+    looking at before you read a single instruction.
+
 ## Registers
 
 16 general-purpose 64-bit registers. Each is also addressable at 32-, 16- and
@@ -215,6 +228,43 @@ salq  %cl, %rax    # shift by the amount in %cl
     The shift count must be an immediate or sit in `%cl` (the low byte of
     `%rcx`). No other register works.
 
+## Multiplication and division
+
+Two-operand `imulq` covers the everyday case. Full 128-bit products and *all*
+division use fixed registers — `%rax` and `%rdx` — and take a single operand.
+
+| Instruction | Effect |
+|---|---|
+| `imulq S, D` | `D = D * S`, truncated to 64 bits (signed and unsigned agree on the low half) |
+| `imulq S` | signed full product: `%rdx:%rax = %rax * S` (128-bit) |
+| `mulq S` | unsigned full product: `%rdx:%rax = %rax * S` |
+| `cqto` | sign-extend `%rax` across `%rdx:%rax` — required before `idivq` |
+| `idivq S` | signed divide: quotient → `%rax`, remainder → `%rdx` |
+| `divq S` | unsigned divide, same registers |
+
+`long quotient(long x, long y) { return x / y; }` compiles to:
+
+```asm
+movq  %rdi, %rax    # dividend into %rax
+cqto                # sign-extend it across %rdx:%rax
+idivq %rsi          # %rax = quotient, %rdx = remainder
+```
+
+!!! tip
+    Division costs tens of cycles, so the compiler dodges it whenever the
+    divisor is a constant — but a signed divide by a power of two needs a
+    *bias*, because C rounds toward zero while `sar` rounds down:
+
+    ```asm
+    movq  %rdi, %rax   # x
+    shrq  $63, %rax    # 1 if x < 0, else 0
+    addq  %rdi, %rax   # add the bias first
+    sarq  %rax         # (x + (x<0)) >> 1
+    ```
+
+    `shr $63` followed by an add and a shift is "signed divide by a power of
+    two", not a bit-twiddling hack.
+
 ## Condition codes and comparisons
 
 ALU ops set four flags as a side effect. `cmp` and `test` set them *without*
@@ -346,8 +396,47 @@ The indirect jump `jmp *.L4(,%rdi,8)` reads the address stored at
 
 !!! tip
     The giveaway is a bounds check (`cmpq $N`, `ja .default`) followed by an
-    indirect `jmp` through a `.rodata` table. Cases that fall through share the
-    same target label; `ja` is unsigned, so it catches negative indices too.
+    indirect `jmp` through a `.rodata` table. Two cases that do the same thing
+    share one target label — the table just holds that label twice. And `ja` is
+    unsigned, so the single bounds check catches negative indices too.
+
+That's the book's form, and it's what you get with `-fno-pie -no-pie`. By
+default today the table holds **4-byte offsets from its own address** rather
+than absolute addresses, so the jump takes three more instructions:
+
+```asm
+        cmpq    $6, %rdi
+        ja      .L9
+        leaq    .L4(%rip), %rdx      # address of the table
+        movslq  (%rdx,%rdi,4), %rax  # sign-extend the 32-bit offset
+        addq    %rdx, %rax           # table address + offset = target
+        notrack jmp *%rax
+
+.L4:    .long  .L8-.L4               # entries are distances, not addresses
+        .long  .L9-.L4
+```
+
+A sparse `switch` (say `case 1`, `case 500`, `case 9000`) gets no table at
+all — the compiler emits a chain of `cmp`/`je` instead.
+
+## Stack manipulation — `push` and `pop`
+
+The stack grows **downward**, toward lower addresses, so pushing *decrements*
+`%rsp`.
+
+```asm
+pushq %rbx     # rsp -= 8;  Mem[rsp] = rbx
+popq  %rbx     # rbx = Mem[rsp];  rsp += 8
+```
+
+Both take one operand and always move 8 bytes in 64-bit code. To allocate room
+for locals the compiler doesn't push repeatedly — it drops `%rsp` once:
+
+```asm
+subq  $24, %rsp    # allocate 24 bytes of frame
+...
+addq  $24, %rsp    # release it (or `leave` if %rbp is the frame pointer)
+```
 
 ## Procedures and the stack
 
@@ -466,6 +555,68 @@ union U {
     internal padding gaps (trailing padding to the struct's own alignment
     stays).
 
+## Addressing globals — `%rip`-relative
+
+Locals live at an offset from `%rsp`. Globals, statics, string literals and
+jump tables are addressed relative to the **instruction pointer**, so the code
+works wherever the loader maps it — position-independent executables are the
+default on every current distro.
+
+`long counter; long bump(void) { return ++counter; }`:
+
+```asm
+movq counter(%rip), %rax
+addq $1, %rax
+movq %rax, counter(%rip)
+```
+
+For an array the base address gets materialized first, then indexed as usual:
+
+```asm
+leaq table(%rip), %rax      # rax = &table[0]
+movq (%rax,%rdi,8), %rax    # rax = table[i]
+```
+
+!!! tip
+    `name(%rip)` means a global, a static, a literal or a jump table — never a
+    local. Locals are `N(%rsp)` or `N(%rbp)`.
+
+## Floating point — the `%xmm` registers
+
+Floating point never touches the general-purpose registers. It has its own file
+of sixteen 128-bit registers, `%xmm0`–`%xmm15`, and its own instructions (SSE2).
+
+| | |
+|---|---|
+| Arguments | `%xmm0`–`%xmm7`, counted separately from the integer arguments |
+| Return value | `%xmm0` |
+| Saving | all caller-saved — there are no callee-saved `%xmm` registers |
+
+Read the suffixes as two letters: `s` = **s**calar (one value, not a vector),
+then `s` = **s**ingle (`float`) or `d` = **d**ouble (`double`).
+
+| Instruction | Meaning |
+|---|---|
+| `movss` / `movsd` | move one `float` / `double` |
+| `addss` / `addsd` | add — likewise `sub`, `mul`, `div` |
+| `cvtsi2sd` | `int` → `double` |
+| `cvttsd2si` | `double` → `int`, **t**runcating, which is what a C cast does |
+| `cvtss2sd` / `cvtsd2ss` | between `float` and `double` |
+| `comisd` / `ucomisd` | compare two values and set the flags |
+| `xorpd` / `andpd` | sign-bit tricks — negation and `fabs` |
+
+`double dadd(double x, double y) { return x + y; }` is a single instruction:
+
+```asm
+addsd %xmm1, %xmm0    # args arrive in xmm0/xmm1, result leaves in xmm0
+```
+
+!!! tip
+    Two surprises worth memorizing. `-x` is not arithmetic: it's `xorpd`
+    against a constant that has only the sign bit set. And FP comparison sets
+    the flags like an **unsigned** compare, so `x < y` becomes `comisd` plus
+    `seta`/`setb` — you will never see `setl`/`setg` on floating point.
+
 ## Buffer overflow basics
 
 Writing past the end of a stack buffer walks upward into the saved registers
@@ -491,22 +642,68 @@ and the return address — overwrite that, and you control where `ret` goes.
 | ASLR | Randomizes stack / heap / library base addresses on every run |
 | NX / DEP | Marks the stack non-executable, so injected shellcode can't run |
 
+NX is why *return-oriented programming* exists: if you can't inject new code,
+chain fragments of code that's already there. A "gadget" is a handful of
+instructions ending in `ret`; a stack full of gadget addresses executes them
+one after another, since each `ret` pops the next one. ASLR is the defence —
+the addresses aren't predictable.
+
 GCC's stack protector, as it appears in disassembly:
 
 ```asm
-movq %fs:40, %rax      # load the canary from thread-local storage
-movq %rax, -8(%rbp)    # place it just below the return address
+movq %fs:40, %rax         # load the canary from thread-local storage
+movq %rax, 8(%rsp)        # stash it just below the return address
+xorl %eax, %eax           # don't leave a copy lying around in a register
 ...
-movq -8(%rbp), %rax    # on the way out, read it back
-xorq %fs:40, %rax      # still the same value?
-jne  __stack_chk_fail  # no → canary corrupted, abort
+movq 8(%rsp), %rax        # on the way out, read it back
+subq %fs:40, %rax         # still the same value?
+jne  .L4                  # no → corrupted
+addq $16, %rsp
+ret
+.L4:
+call __stack_chk_fail@PLT
 ```
+
+That's `gcc -Og` output verbatim. The book writes the check as `xorq %fs:40,
+%rax`; current gcc uses `subq`. Same test — both leave zero in `%rax` exactly
+when the canary is intact.
 
 !!! tip
     `gets()` is the classic culprit — no bounds checking at all. Use `fgets()`.
     Modern GCC enables `-fstack-protector-strong` by default on most distros.
 
+## Output the book predates
+
+CS:APP's listings were produced around 2014. A current `gcc` on a current
+distro adds things the book never shows. None of them change the chapter's
+model, but all of them will be in front of you in every listing.
+
+| What you see | Why it's there |
+|---|---|
+| `endbr64` opening nearly every function | Intel CET / branch tracking — it marks a legal target for an indirect jump or call. `-fcf-protection=none` removes it. |
+| `name(%rip)` instead of absolute addresses | PIE is the default. `-fno-pie -no-pie` restores the book's addressing. |
+| Jump tables of `.long` offsets, not `.quad` addresses | Also PIE, as above. |
+| `call __strcpy_chk` where the source says `strcpy` | `_FORTIFY_SOURCE` is on by default on Ubuntu; when the compiler knows the buffer size it swaps in a checked variant. |
+| `%fs:40` loads and a `__stack_chk_fail` branch | `-fstack-protector-strong` is on by default. |
+
+To get listings close to the book's:
+
+```bash
+gcc -Og -fno-pie -no-pie -fcf-protection=none \
+    -fno-stack-protector -fno-asynchronous-unwind-tables -S prog.c
+```
+
+## See also
+
+- [From C to assembly](../guides/csapp-ch3-c-to-asm.md) — every pattern above,
+  compiled and read on a real machine
+- [gdb & objdump](gdb-objdump.md) — the tools for looking at a binary
+- [CS:APP ch. 3 resources](../bookmarks/csapp-ch3.md) — course site, labs,
+  references
+- [Runnable examples](../examples/csapp-ch3/index.md) — the C files behind the listings
+
 ---
 
 Source: Bryant & O'Hallaron, *Computer Systems: A Programmer's Perspective*,
-3rd ed., ch. 3. Study companion — not a substitute for the text.
+3rd ed., ch. 3. Study companion — not a substitute for the text. Listings
+marked as real output were generated with gcc 13.3 on x86-64 Linux.

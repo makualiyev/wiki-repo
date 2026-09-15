@@ -48,10 +48,12 @@ nav:
   - Home: index.md
   - Guides:
       - Development & Tooling: guides/dev-tooling.md
+      - From C to assembly: guides/csapp-ch3-c-to-asm.md
       - Web Scraping intro: guides/web-scraping-intro.md
   - Cheatsheets:
       - Overview: cheatsheets/index.md
       - "CS:APP ch. 3 — x86-64 assembly": cheatsheets/csapp-ch3-x86-64.md
+      - gdb & objdump: cheatsheets/gdb-objdump.md
       - git — everyday recipes: cheatsheets/git.md
   - TILs:
       - Overview: til/index.md
@@ -59,6 +61,9 @@ nav:
   - Bookmarks:
       - Links by topic: bookmarks/index.md
       - Learning Resources: bookmarks/resources.md
+      - "CS:APP ch. 3 resources": bookmarks/csapp-ch3.md
+  - Examples:
+      - "CS:APP ch. 3 code": examples/csapp-ch3/index.md
   - Reading List: reading-list.md
 
 markdown_extensions:

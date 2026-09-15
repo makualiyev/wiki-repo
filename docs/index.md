@@ -13,11 +13,15 @@ short *Today I Learned* notes, and a categorized pile of bookmarks.
 Long-form, opinionated write-ups.
 
 - [Development & Tooling](guides/dev-tooling.md) 🇬🇧 — WSL, PostgreSQL setup and admin
+- [From C to assembly](guides/csapp-ch3-c-to-asm.md) 🇬🇧 — reading gcc output, CS:APP ch. 3 hands on
 - [Web Scraping intro](guides/web-scraping-intro.md) 🇷🇺 — crawling, scraping and parsing from first principles
 
 ## Cheatsheets
 
 - [Overview](cheatsheets/index.md) — "how do I do X again" quick references
+- [CS:APP ch. 3 — x86-64 assembly](cheatsheets/csapp-ch3-x86-64.md) — plus
+  [runnable examples](examples/csapp-ch3/index.md) and
+  [ch. 3 resources](bookmarks/csapp-ch3.md)
 
 ## TILs
 

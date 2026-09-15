@@ -13,6 +13,7 @@ docs/
   cheatsheets/        # "how do I do X again" quick references
   til/                # Today I Learned — small dated single-fact notes
   bookmarks/          # categorized links
+  examples/           # runnable code that notes refer to
   assets/             # images used by the docs
 templates/            # copy-paste starting points for new notes
 INBOX.md              # frictionless capture; triage into docs/ later
