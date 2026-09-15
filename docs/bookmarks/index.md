@@ -50,6 +50,8 @@
 
 ### C Language
 
+- **[CS:APP ch. 3 resources](csapp-ch3.md)** — course material, labs and
+  references for machine-level programming (a page of its own)
 - [Memory Allocation](https://c-faq.com/malloc/)
 - [Coding Challenges - Intro | Coding Challenges](https://codingchallenges.fyi/challenges/intro)
 - [Challenging projects every programmer should try - Austin Z. Henley](https://austinhenley.com/blog/challengingprojects.html)

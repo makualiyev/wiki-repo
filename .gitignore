@@ -11,3 +11,8 @@ venv/
 .DS_Store
 .idea/
 .vscode/
+
+# Build artifacts from docs/examples/ (regenerate with `make`)
+*.s
+*.o
+docs/examples/csapp-ch3/structs

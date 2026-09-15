@@ -42,4 +42,5 @@ Things queued to read. Check them off as you go; move the keepers into
 
 ## Books
 
-- [ ] Computer Systems A Programmer's Perspective 3rd ed
+- [ ] Computer Systems A Programmer's Perspective 3rd ed — ch. 3 notes:
+      [x86-64 assembly cheatsheet](cheatsheets/csapp-ch3-x86-64.md)
