@@ -61,23 +61,22 @@ def save_state(state: dict) -> None:
     STATE_PATH.write_text(json.dumps(state, indent=2) + "\n")
 
 
-def message_link(chat_id: int, thread_id: int, message_id: int) -> str:
-    short_id = str(chat_id)
-    if short_id.startswith("-100"):
-        short_id = short_id[4:]
-    return f"https://t.me/c/{short_id}/{thread_id}/{message_id}"
+def format_entry(message: dict) -> tuple[str, str]:
+    """Return (section_heading, markdown_bullet) for one Telegram message.
 
-
-def format_entry(message: dict, chat_id: int, thread_id: int) -> tuple[str, str]:
-    """Return (section_heading, markdown_bullet) for one Telegram message."""
+    Bullets never embed the group's chat/thread ID: INBOX.md is published
+    to a public site, and a t.me/c/<chat_id>/... link would leak the
+    private group's internal ID to anyone reading it.
+    """
     text = message.get("text") or message.get("caption") or ""
     tags = {t.lower() for t in HASHTAG_RE.findall(text)}
     cleaned = HASHTAG_RE.sub("", text).strip()
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
     urls = URL_RE.findall(text)
+    message_id = message["message_id"]
 
     if "til" in tags:
-        return SECTION_TIL, f"- [ ] {cleaned}" if cleaned else f"- [ ] {message_link(chat_id, thread_id, message['message_id'])}"
+        return SECTION_TIL, f"- [ ] {cleaned}" if cleaned else f"- [ ] [TIL flagged with no text — message #{message_id}, check Telegram]"
 
     if "link" in tags or urls:
         url = urls[0] if urls else ""
@@ -93,9 +92,9 @@ def format_entry(message: dict, chat_id: int, thread_id: int) -> tuple[str, str]
         return SECTION_UNSORTED, f"- [ ] {cleaned}"
 
     # No text/caption at all (e.g. a bare video/photo upload) - we can't
-    # archive the media itself, so leave a breadcrumb back to Telegram.
-    link = message_link(chat_id, thread_id, message["message_id"])
-    return SECTION_UNSORTED, f"- [ ] [attachment with no caption]({link}) — review in Telegram"
+    # archive the media itself and won't leak a link to the private group,
+    # so leave a breadcrumb the owner can use to find it manually.
+    return SECTION_UNSORTED, f"- [ ] [attachment with no caption — message #{message_id}, check Telegram]"
 
 
 def insert_into_section(lines: list[str], heading: str, new_bullets: list[str]) -> list[str]:
@@ -154,7 +153,7 @@ def main() -> int:
         if message.get("from", {}).get("is_bot"):
             continue
 
-        section, bullet = format_entry(message, chat_id, thread_id)
+        section, bullet = format_entry(message)
         entries[section].append(bullet)
 
     new_offset = max_update_id + 1
