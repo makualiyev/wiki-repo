@@ -18,8 +18,11 @@ Every message posted in the group's **INBOX** topic gets one bullet in
 | anything else | `## Unsorted` |
 
 A video/photo uploaded with no caption and no link can't be archived into a
-markdown file, so it's added to `## Unsorted` as a link back to the
-Telegram message instead — go grab it manually.
+markdown file, so it's added to `## Unsorted` as `- [ ] [attachment with no
+caption — message #<id>, check Telegram]` — go grab it manually. This
+deliberately doesn't include a `t.me/...` link: `INBOX.md` is published to
+a public site, and a link back to the group would leak its private,
+internal chat ID to anyone reading it.
 
 The bot only reads messages inside the configured INBOX topic; everything
 else in the group (other topics, checklists, etc.) is ignored.
