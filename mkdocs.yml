@@ -50,6 +50,7 @@ nav:
       - Development & Tooling: guides/dev-tooling.md
       - From C to assembly: guides/csapp-ch3-c-to-asm.md
       - Web Scraping intro: guides/web-scraping-intro.md
+      - Telegram → INBOX bot: guides/telegram-inbox-bot.md
   - Cheatsheets:
       - Overview: cheatsheets/index.md
       - "CS:APP ch. 3 — x86-64 assembly": cheatsheets/csapp-ch3-x86-64.md

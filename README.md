@@ -39,3 +39,10 @@ first deploy, set `site_url` in `mkdocs.yml` to the published URL.
 1. Copy the matching file from `templates/` into the right folder under `docs/`.
 2. Add it to `nav:` in `mkdocs.yml`.
 3. `mkdocs serve` to preview, then commit.
+
+## Telegram → INBOX bot
+
+A scheduled GitHub Action ([`telegram-inbox.yml`](.github/workflows/telegram-inbox.yml))
+pulls messages from one topic of a private Telegram group straight into
+`INBOX.md`. See [`docs/guides/telegram-inbox-bot.md`](docs/guides/telegram-inbox-bot.md)
+for setup and how messages get sorted.
